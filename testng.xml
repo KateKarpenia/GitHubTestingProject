@@ -1,15 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="GitHubtestingProject">
     <test name="Test" preserve-order="true">
         <classes>
             <class name="by.karpenia.test.GitHubTests"></class>
-            <methods>
-                <include name="setUpAndLogin"></include>
-                <include name="changeEmailPreferencesInSettingsTest"></include>
-                <include name="newRepositoryCreateAndDeleteTest"></include>
-                <include name="changePublicEmailInProfileTest"></include>
-                <include name="saveRepliesTest"></include>
-            </methods>
         </classes>
 
     </test>

@@ -3,33 +3,38 @@ package by.karpenia.pages;
 import by.karpenia.components.NavigationMenu;
 import by.karpenia.tools.Util;
 import by.karpenia.components.AlertBox;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
-import java.util.List;
 
-/**
- * Created by Kate on 21.01.17.
- */
 public class SettingsPage {
 
     private final WebDriver driver;
     private final NavigationMenu navigationMenu;
     private final AlertBox alertBox;
 
-    public final static By emailsSettingLocator = By.xpath(".//*[@id='js-pjax-container']/div/div[1]/nav[1]/a[3]");
-    public final static By emailsPrefRadioButtonMarketingLocator = By.cssSelector("input[id='type_marketing']");
-    public final static By emailsPrefRadioButtonTransLocator = By.cssSelector("input[id='type_transactional']");
-    public final static By saveEmailPreferencesLocator = By.name("commit");
-    public final static By profileSettingsLocator = By.xpath(".//*[@id='js-pjax-container']/div/div[1]/nav[1]/a[1]");
-    public final static By changePublicEmailLocator = By.id("user_profile_email");
-    public final static By updateProfileButtonLocator = By.xpath(".//*[@id='profile_25301399']/div[2]/p/button");
+    @FindBy(id = "user_profile_name")
+    private WebElement userNameSettingLocator;
+
+    @FindBy(id = "user_profile_location")
+    private WebElement userLocationSettingLocator;
+
+    @FindBy(xpath = "//a[contains(@href,'/settings/profile')]")
+    private WebElement navigateUserSettingsPageLocator;
+
+    @FindBy(id = "user_profile_email")
+    private WebElement changePublicEmailLocator;
+
+    @FindBy(css = "p .btn")
+    private WebElement updateProfileButtonLocator;
 
     public SettingsPage(WebDriver driver) {
 
         this.driver = driver;
+        PageFactory.initElements(this.driver, this);
         this.navigationMenu = new NavigationMenu(driver);
         this.alertBox = new AlertBox(driver);
     }
@@ -39,41 +44,27 @@ public class SettingsPage {
         return this;
     }
 
-    public SettingsPage emailsSettings() {
-        driver.findElement(emailsSettingLocator).click();
-        return new SettingsPage(driver);
+    public SettingsPage changeUserName(String name) {
+        userNameSettingLocator.clear();
+        userNameSettingLocator.sendKeys(name);
+        return this;
     }
 
-    public SettingsPage emailsPreferencesChangeRadioButton() {
-        if (driver.findElement(emailsPrefRadioButtonMarketingLocator).isSelected()) {
-            System.out.println("marketing selected");
-            driver.findElement(emailsPrefRadioButtonTransLocator).click();
-        } else {
-            System.out.println("transactional selected");
-            driver.findElement(emailsPrefRadioButtonMarketingLocator).click();
-        }
-        return new SettingsPage(driver);
+    public SettingsPage changeUserLocation(String location) {
+        userLocationSettingLocator.clear();
+        userLocationSettingLocator.sendKeys(location);
+        return this;
     }
 
-    public SettingsPage saveEmailPreferences() {
-        driver.findElement(saveEmailPreferencesLocator).submit();
-        return new SettingsPage(driver);
-    }
-
-    public SettingsPage profileSettings() {
-        driver.findElement(profileSettingsLocator).click();
+    public SettingsPage navigateUserSettingsPage() {
+        navigateUserSettingsPageLocator.click();
         return new SettingsPage(driver);
     }
 
     public SettingsPage changePublicEmail() {
-        driver.findElement(changePublicEmailLocator).click();
+        changePublicEmailLocator.click();
 
-        Select dropdownMenu = new Select(driver.findElement(changePublicEmailLocator));
-//        dropdownMenu.selectByIndex(1);
-
-//        List<WebElement> selectedValue = dropdownMenu.getOptions();
-
-
+        Select dropdownMenu = new Select(changePublicEmailLocator);
         WebElement selectedValue = dropdownMenu.getFirstSelectedOption();
 
         String value = selectedValue.getText();
@@ -87,7 +78,7 @@ public class SettingsPage {
     }
 
     public SettingsPage updateProfileButton() {
-        driver.findElement(updateProfileButtonLocator).click();
+        updateProfileButtonLocator.click();
         return new SettingsPage(driver);
     }
 
