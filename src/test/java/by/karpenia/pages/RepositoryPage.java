@@ -6,6 +6,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import java.util.Iterator;
+import java.util.Set;
+import static by.karpenia.components.AlertBox.alertBoxInputLocator;
+import static by.karpenia.components.AlertBox.alertSubmitDeleteLocator;
 
 public class RepositoryPage {
 
@@ -39,13 +43,25 @@ public class RepositoryPage {
         return new RepositoryPage(driver);
     }
 
-    public RepositoryPage openSettings() {
-        driver.get(Util.REPOSITORY_SETTINGS_URL);
-        return this;
-    }
-
     public RepositoryPage deleteRepository() {
+        driver.get(Util.REPOSITORY_SETTINGS_URL);
         deleteRepositoryLocator.click();
+
+        String parentWindowHandler = driver.getWindowHandle();
+        String subWindowHandler = null;
+
+        Set<String> handles = driver.getWindowHandles();
+        Iterator<String> iterator = handles.iterator();
+        while (iterator.hasNext()){
+            subWindowHandler = iterator.next();
+        }
+        driver.switchTo().window(subWindowHandler);
+        alertBoxInputLocator.clear();
+        alertBoxInputLocator.sendKeys(Util.REPOSITORY_NAME);
+
+        alertSubmitDeleteLocator.submit();
+        driver.switchTo().window(parentWindowHandler);
+
         return new RepositoryPage(driver);
     }
 

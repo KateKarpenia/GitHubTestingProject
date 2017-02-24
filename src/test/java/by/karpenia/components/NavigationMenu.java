@@ -1,15 +1,18 @@
 package by.karpenia.components;
 
 import by.karpenia.pages.*;
+import by.karpenia.tools.Waiter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class NavigationMenu {
 
     private WebDriver driver;
+    private Waiter waiter;
 
     @FindBy(linkText = "Sign in")
     private WebElement navigateLoginLocator;
@@ -29,6 +32,7 @@ public class NavigationMenu {
     public NavigationMenu(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(this.driver, this);
+        this.waiter = new Waiter(driver);
     }
 
     public LoginPage navigateLoginPage () {
@@ -36,26 +40,22 @@ public class NavigationMenu {
         return new LoginPage(driver);
     }
 
-    public HomePage navigateProfilePage() {
+    public SettingsPage navigateUserSettingsPage() {
+        waiter.waitForVisibility(navigateProfileLocator);
         navigateProfileLocator.click();
-        return new HomePage(driver);
-    }
-
-    public SettingsPage navigateSettingsPage() {
         navigateSettingsLocator.click();
         return new SettingsPage(driver);
     }
 
-    public SettingsPage navigateCreateNewRepositoryPage() {
-        navigateCreateNewLocator.click();
-        return new SettingsPage(driver);
-    }
-
     public RepositoryPage navigateNewRepositoryPage() {
+        waiter.waitForVisibility(navigateCreateNewLocator);
+        navigateCreateNewLocator.click();
         navigateNewRepositoryLocator.click();
         return new RepositoryPage(driver);
     }
 
-
+    public Waiter waiter() {
+        return new Waiter(driver);
+    }
 
 }

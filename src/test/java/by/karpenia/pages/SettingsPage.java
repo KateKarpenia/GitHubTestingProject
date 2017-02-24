@@ -1,7 +1,6 @@
 package by.karpenia.pages;
 
 import by.karpenia.components.NavigationMenu;
-import by.karpenia.tools.Util;
 import by.karpenia.components.AlertBox;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -39,29 +38,13 @@ public class SettingsPage {
         this.alertBox = new AlertBox(driver);
     }
 
-    public SettingsPage open() {
-        driver.get(Util.SETTINGS_URL);
-        return this;
-    }
-
-    public SettingsPage changeUserName(String name) {
+    public SettingsPage changeUserInfo (String name, String location) {
         userNameSettingLocator.clear();
         userNameSettingLocator.sendKeys(name);
-        return this;
-    }
 
-    public SettingsPage changeUserLocation(String location) {
         userLocationSettingLocator.clear();
         userLocationSettingLocator.sendKeys(location);
-        return this;
-    }
 
-    public SettingsPage navigateUserSettingsPage() {
-        navigateUserSettingsPageLocator.click();
-        return new SettingsPage(driver);
-    }
-
-    public SettingsPage changePublicEmail() {
         changePublicEmailLocator.click();
 
         Select dropdownMenu = new Select(changePublicEmailLocator);
@@ -74,14 +57,11 @@ public class SettingsPage {
             dropdownMenu.selectByIndex(0);
         }
 
-        return new SettingsPage(driver);
-    }
-
-    public SettingsPage updateProfileButton() {
         updateProfileButtonLocator.click();
-        return new SettingsPage(driver);
-    }
 
+        return new SettingsPage(driver);
+
+    }
 
     public NavigationMenu navigationMenu() {
         return navigationMenu;
