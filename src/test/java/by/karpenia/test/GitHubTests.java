@@ -8,10 +8,8 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import java.util.Iterator;
 import java.util.Set;
-
 import static by.karpenia.pages.RepositoryPage.currentRepositoryNameLocator;
 import static by.karpenia.tools.Util.*;
 import static by.karpenia.components.AlertBox.*;
@@ -25,6 +23,7 @@ public class GitHubTests {
     private RepositoryPage repositoryPage;
     private String textOnAlert;
     private String currentRepositoryName;
+
     WebDriver driver = WebDriverSingleton.getInstance();
 
     @BeforeClass
